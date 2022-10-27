@@ -1,8 +1,13 @@
+/* En algún momento modificar los metodos de fs usados con Sync por los promises usados con require('node:fs/promises'), siguiendo la documentacion https://nodejs.org/api/fs.html, 
+de este modo se evita crear promesas aca ya que los metodos requeridos ya seran promesas en si.
+Ademas al no crear promesas aqui, podemos acceder a this.path directamente desde el constructor de Contenedor. */
+//const fs = require('node:fs/promises')
 const fs = require('fs')
 
 class Contentedor{
 
-    constructor(){
+    constructor(path){
+        this.path = path;
     }
 
     save = function (nota, archivo) {
@@ -46,19 +51,29 @@ class Contentedor{
         });
       };
 
-    getAll = function (archivo) {
-        return new Promise(function (resolve, reject) {      
+    getAll = async function (archivo) {
+        /* METODO CON PROMESA DESDE EL MISMO FS PROMISES
+        try {
+            console.log(this.path)
+            const contents = await fs.readFile(this.path, { encoding: 'utf8' });
+            const dataObjetc = JSON.parse(contents)
+            return dataObjetc;
+          } catch (err) {
+            throw new Error(err)
+          } */
+
+        return new Promise(function (resolve, reject) {
             fs.readFile(archivo, 'utf-8', (err, data) => {
-                    if(err) {
-                        reject(err)
-                        throw new Error(err)
-                    }
-                    //todo salió bien
-                    const dataObjetc = JSON.parse(data)
-                    resolve(dataObjetc);
+                if(err) {
+                    reject(err)
+                    throw new Error(err)
+                }
+                //todo salió bien
+                const dataObjetc = JSON.parse(data)
+                resolve(dataObjetc);
                 }
             )
-        });
+        })
     };
 
     getById = async function (id, archivo) {
@@ -122,7 +137,7 @@ class Contentedor{
     };
 }
 
-const contenedor = new Contentedor()
+const contenedor = new Contentedor('./notas.json')
 
 const nota1 = {
     denominacion : 'River sigue sin poder ganar.',
@@ -139,8 +154,8 @@ const notasPost = async (nota) => {
     //console.log('Nota guardada Id : ', notaId)
 }
 
-const notasGet = async () => {
-   return await contenedor.getAll('./notas.json')
+const notasGet = () => {
+   return contenedor.getAll('./notas.json')
    //console.log('Estas son todas las notas : ', notas)
 }
 
