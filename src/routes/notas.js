@@ -30,7 +30,9 @@ const notas = require('../notas')
 
 router.get('/', async function (req, res) {
     const notasGet = await notas.notasGet()
-    res.json({ notas: notasGet })
+    /* res.json({ notas: notasGet }) */
+    //console.log({notasGet})
+    res.render('notas', {notasGet})
 })
 router.get('/:id', async function (req, res) {
     const notasGetDetalle = await notas.notasGetDetalle(req.params.id)

@@ -11,12 +11,45 @@
 <body>
     <h1>Notas</h1>
     <i>Puede ingresar su nota completando los siguientes campos.</i></br></br></br>
-    <form action="api/notas" method="post">
-            Denominacion: <input type="text" name="denominacion"></br></br></br>
+    <form id="form" method="post">
+            Denominacion: <input type="text" id="denominacion"></br></br></br>
             Contenido:</br>
-            <textarea name="contenido"></textarea></br></br></br>
-            <input type="submit" value="Enviar la información">
+            <textarea id="contenido"></textarea></br></br></br>
+            <button  type="submit">Enviar la información</button>
     </form>
+    </br>
+    <button id="listado">Ir a listado</button>
+
+    <script>
+        const form = document.getElementById('form');
+        form.addEventListener('submit', (event) => {
+            event.preventDefault()
+            const data = JSON.stringify({
+                denominacion: document.getElementById('denominacion').value,
+                contenido : document.getElementById('contenido').value
+            })
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:8080/api/notas");
+
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.onload = () => {
+                const id = JSON.parse(xhr.response).id
+                if(id){
+                    alert('Nota agregada correctamente!');
+                }
+                //window.location.href = "http://localhost:8080";
+            }
+
+            xhr.send(data);
+        });
+
+        const listado = document.getElementById('listado');
+        listado.addEventListener('click', (event) => {
+            window.location.href = "http://localhost:8080/api/notas";
+        });
+    </script>
 </body>
 
 </html>

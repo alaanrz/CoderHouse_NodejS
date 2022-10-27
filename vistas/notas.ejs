@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Notas Listado</h1>
+    <% if(notasGet.length){%>
+    <ul>
+        <% notasGet.forEach(element => { %>
+            <h3><%=element.id%>. <%=element.denominacion%></h3>
+            <p style="padding-left: 10px;"><%=element.contenido%></p>
+        <% }) %>
+    </ul>
+    <%}else{%>
+        <p>No hay notas...</p>
+    <%}%>
+    <button id="volver">Volver</button>
+
+    <script>
+        const volver = document.getElementById('volver');
+        volver.addEventListener('click', (event) => {
+            window.location.href = "http://localhost:8080";
+        });
+    </script>
+</body>
+
+</html>
