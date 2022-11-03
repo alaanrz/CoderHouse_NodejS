@@ -1,6 +1,7 @@
 const {Router} = require('express')
 const router = Router()
 const notas = require('../notas')
+const { getWsServer } = require('../services/socket');
 
 /* ****************************************************
 ************** ESTRUCTURA OBJETO NOTA *****************
@@ -44,6 +45,9 @@ router.get('/:id', async function (req, res) {
 })
 router.post('/', async function (req, res) {
     const notasPost = await notas.notasPost(req.body)
+    const io = getWsServer()
+    const notasGetDetalle = await notas.notasGetDetalle(notasPost)
+    io.sockets.emit('NotasCliente', notasGetDetalle)
     res.json({ id: notasPost })
 })
 router.put('/:id', async function (req, res) {
