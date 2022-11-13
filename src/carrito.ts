@@ -21,9 +21,10 @@ class Carrito{
                         }
                         //todo salió bien
                         const dataObjetc = JSON.parse(data)
+
                         let carrito : any = {
                             id : dataObjetc.length + 1,
-                            notas : nota
+                            notas : [nota]
                         };
                         dataObjetc.push(carrito)
                         //console.log(dataObjetc)
@@ -43,7 +44,7 @@ class Carrito{
 
                 let carrito : any = [{
                     id : 1,
-                    notas : nota
+                    notas : [nota]
                 }];
                 //console.log(carrito)
                 fs.writeFile(archivo, JSON.stringify(carrito), (err: string | undefined) => {
@@ -52,7 +53,7 @@ class Carrito{
                             throw new Error(err)
                         }
                         //todo salió bien
-                        resolve(carrito.id);
+                        resolve(carrito[0].id);
                     }
                 )
             }
@@ -182,7 +183,6 @@ const notasDeleteDetalle = async (notaId: any) => {
 
 const notasDelete = async () => {
     let notasDelete = await carrito.deleteAll('./carrito.json')
-    console.log(notasDelete)
 }
 
 export {  
