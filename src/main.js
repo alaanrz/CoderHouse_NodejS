@@ -1,4 +1,4 @@
-const server = require('./services/server')
+import server from './services/server'
 
 const PORT = 8080;
 server.listen(PORT, () => {
