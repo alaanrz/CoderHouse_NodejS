@@ -11,7 +11,7 @@ class Carrito{
         this.path = path;
     }
 
-    save = function (nota: { id?: number; denominacion: string; contenido: string }, archivo: string) {
+    save = function (nota: { id: number; cantidad: number }, archivo: string) {
         return new Promise(function (resolve, reject) {   
             if (fs.existsSync(archivo)) { 
                     fs.readFile(archivo, 'utf-8', (err: string | undefined, data: string) => {
@@ -21,31 +21,38 @@ class Carrito{
                         }
                         //todo salió bien
                         const dataObjetc = JSON.parse(data)
-                        nota.id = dataObjetc.length + 1
-                        dataObjetc.push(nota)
+                        let carrito : any = {
+                            id : dataObjetc.length + 1,
+                            notas : nota
+                        };
+                        dataObjetc.push(carrito)
+                        //console.log(dataObjetc)
+
                         fs.writeFile(archivo, JSON.stringify(dataObjetc), (err: string | undefined) => {
                                 if(err) {
                                     reject(err)
                                     throw new Error(err)
                                 }
                                 //todo salió bien
-                                resolve(nota.id);
+                                resolve(carrito.id);
                             }
                         )
                     }
                 )
             }else{
-                let dataObjetc = []
-                nota.id = 1
-                dataObjetc[0] = nota
 
-                fs.writeFile(archivo, JSON.stringify(dataObjetc), (err: string | undefined) => {
+                let carrito : any = [{
+                    id : 1,
+                    notas : nota
+                }];
+                //console.log(carrito)
+                fs.writeFile(archivo, JSON.stringify(carrito), (err: string | undefined) => {
                         if(err) {
                             reject(err)
                             throw new Error(err)
                         }
                         //todo salió bien
-                        resolve(nota.id);
+                        resolve(carrito.id);
                     }
                 )
             }
@@ -150,7 +157,7 @@ const nota2 = {
     contenido : 'Lorem ipsum dolor sit amet consectetur adipiscing elit.'
 }
 
-const notasPost = async (nota: { denominacion: string; contenido: string; }) => {
+const notasPost = async (nota: { id: number; cantidad: number; }) => {
     return await carrito.save(nota, './carrito.json')
     //console.log('Nota guardada Id : ', notaId)
 }
@@ -174,20 +181,6 @@ const notasDelete = async () => {
     let notasDelete = await carrito.deleteAll('./carrito.json')
     console.log(notasDelete)
 }
-
-/* EJECUCIONES */
-
-const notasEjecucionCompleta = async () => {
-
-    await notasPost(nota1)
-
-    await notasPost(nota2)
-
-    await notasGet()
-
-}
-
-//notasEjecucionCompleta()
 
 export {  
     notasGet,

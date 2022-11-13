@@ -1,13 +1,11 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response } from 'express';
 const router = Router()
-import * as notas from '../notas';
-//import {authVerification} from '../middlewares/auth'
+import * as carrito from '../carrito';
 
 
-
-router.get('/', /* authVerification, */ async function (req, res) {
-    const notasGet = await notas.notasGet()
-    res.json({ notas: notasGet })    
+router.post('/', async function (req, res) {
+    const notasPost = await carrito.notasPost(req.body)
+    res.json({ id: notasPost })
 })
 
 export {router}
