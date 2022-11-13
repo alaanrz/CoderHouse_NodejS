@@ -1,10 +1,8 @@
 "use strict";
-
-var server = require('./services/server');
-var PORT = 8080;
-server.listen(PORT, function () {
-  console.log("Servidor escuchando en el puerto ".concat(PORT));
+Object.defineProperty(exports, "__esModule", { value: true });
+const server_1 = require("./services/server");
+const PORT = 8080;
+server_1.httpServer.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
-server.on('error', function (error) {
-  return console.log("Error en servidor ".concat(error));
-});
+server_1.httpServer.on('error', (error) => console.log(`Error en servidor ${error}`));

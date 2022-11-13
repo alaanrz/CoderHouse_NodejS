@@ -1,8 +1,8 @@
 "use strict";
-
-var _require = require('express'),
-  Router = _require.Router;
-var mainRouter = Router();
-var notasRouter = require('./notas');
-mainRouter.use('/notas', notasRouter);
-module.exports = mainRouter;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.mainRouter = void 0;
+const express_1 = require("express");
+const mainRouter = (0, express_1.Router)();
+exports.mainRouter = mainRouter;
+const notas_1 = require("./notas");
+mainRouter.use('/notas', notas_1.router);

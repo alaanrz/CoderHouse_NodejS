@@ -1,7 +1,7 @@
-const {Router} = require('express')
+import { Router } from 'express';
 const router = Router()
-const notas = require('../notas')
-const { getWsServer } = require('../services/socket');
+import * as notas from '../notas';
+import { getWsServer } from '../services/socket';
 
 /* ****************************************************
 ************** ESTRUCTURA OBJETO NOTA *****************
@@ -51,8 +51,8 @@ router.post('/', async function (req, res) {
     res.json({ id: notasPost })
 })
 router.put('/:id', async function (req, res) {
-    const notasGet = await notas.notasGet()
-    const notaEncontrada = notasGet.findIndex(nota => {
+    const notasGet : any = await notas.notasGet()
+    const notaEncontrada = notasGet.findIndex((nota: any) => {
         return nota.id === parseInt(req.params.id);
     });
     if (notaEncontrada != -1) {
@@ -79,4 +79,4 @@ router.delete('/:id', async function (req, res) {
     })
 })
 
-module.exports = router
+export {router}
