@@ -94,7 +94,8 @@ class Carrito{
                         //todo salió bien
                         const dataObjetc = JSON.parse(data)
                         const notaDetalle = dataObjetc.find((nota: { id: any; }) => nota.id == id)
-                        resolve(notaDetalle);
+                        //console.log(notaDetalle.notas);return
+                        resolve(notaDetalle.notas);
                     }
                 )
             });
