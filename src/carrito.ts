@@ -109,9 +109,11 @@ class Carrito{
                     }
                     //todo salió bien
                     const dataObjetc = JSON.parse(data)
+
                     const indexOfObject = dataObjetc.findIndex((object: { id: any; }) => {
                         return object.id === id;
                     });
+                    //console.log(dataObjetc);
                     if(indexOfObject != -1){
                         dataObjetc.splice(indexOfObject,1)
                     }
