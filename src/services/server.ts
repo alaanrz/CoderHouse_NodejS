@@ -1,8 +1,8 @@
-const express = require('express')
-const { Server: HttpServer } = require('http')
-const mainRouter = require('../routes/index')
-const path = require('path')
-const { initWsServer } = require('./socket');
+import express from 'express';
+import { Server as HttpServer } from 'http';
+import {mainRouter} from '../routes/index';
+import path from 'path';
+import { initWsServer } from './socket';
 
 
 
@@ -31,4 +31,4 @@ initWsServer(httpServer)
 app.use('/api', mainRouter)
 
 
-module.exports = httpServer
+export {httpServer}

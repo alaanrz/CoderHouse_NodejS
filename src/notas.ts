@@ -5,15 +5,16 @@ Ademas al no crear promesas aqui, podemos acceder a this.path directamente desde
 const fs = require('fs')
 
 class Contentedor{
+    path: string;
 
-    constructor(path){
+    constructor(path: string){
         this.path = path;
     }
 
-    save = function (nota, archivo) {
+    save = function (nota: { id?: number; denominacion: string; contenido: string }, archivo: string) {
         return new Promise(function (resolve, reject) {   
             if (fs.existsSync(archivo)) { 
-                    fs.readFile(archivo, 'utf-8', (err, data) => {
+                    fs.readFile(archivo, 'utf-8', (err: string | undefined, data: string) => {
                         if(err) {
                             reject(err)
                             throw new Error(err)
@@ -22,7 +23,7 @@ class Contentedor{
                         const dataObjetc = JSON.parse(data)
                         nota.id = dataObjetc.length + 1
                         dataObjetc.push(nota)
-                        fs.writeFile(archivo, JSON.stringify(dataObjetc), (err) => {
+                        fs.writeFile(archivo, JSON.stringify(dataObjetc), (err: string | undefined) => {
                                 if(err) {
                                     reject(err)
                                     throw new Error(err)
@@ -38,7 +39,7 @@ class Contentedor{
                 nota.id = 1
                 dataObjetc[0] = nota
 
-                fs.writeFile(archivo, JSON.stringify(dataObjetc), (err) => {
+                fs.writeFile(archivo, JSON.stringify(dataObjetc), (err: string | undefined) => {
                         if(err) {
                             reject(err)
                             throw new Error(err)
@@ -51,7 +52,7 @@ class Contentedor{
         });
       };
 
-    getAll = async function (archivo) {
+    getAll = async function (archivo: string) {
         /* METODO CON PROMESA DESDE EL MISMO FS PROMISES
         try {
             console.log(this.path)
@@ -63,7 +64,7 @@ class Contentedor{
           } */
 
         return new Promise(function (resolve, reject) {
-            fs.readFile(archivo, 'utf-8', (err, data) => {
+            fs.readFile(archivo, 'utf-8', (err: string | undefined, data: string) => {
                 if(err) {
                     reject(err)
                     throw new Error(err)
@@ -76,39 +77,39 @@ class Contentedor{
         })
     };
 
-    getById = async function (id, archivo) {
+    getById = async function (id: any, archivo: string) {
         return new Promise(async function (resolve, reject) {
-                fs.readFile(archivo, 'utf-8', (err, data) => {
+                fs.readFile(archivo, 'utf-8', (err: string | undefined, data: string) => {
                         if(err) {
                             reject(err)
                             throw new Error(err)
                         }
                         //todo salió bien
                         const dataObjetc = JSON.parse(data)
-                        const notaDetalle = dataObjetc.find(nota => nota.id == id)
+                        const notaDetalle = dataObjetc.find((nota: { id: any; }) => nota.id == id)
                         resolve(notaDetalle);
                     }
                 )
             });
     };
 
-    deleteById = async function (id, archivo){
+    deleteById = async function (id: string, archivo: string){
         return new Promise(async function (resolve, reject) {
-            fs.readFile(archivo, 'utf-8', (err, data) => {
+            fs.readFile(archivo, 'utf-8', (err: string | undefined, data: string) => {
                     if(err) {
                         reject(err)
                         throw new Error(err)
                     }
                     //todo salió bien
                     const dataObjetc = JSON.parse(data)
-                    const indexOfObject = dataObjetc.findIndex(object => {
+                    const indexOfObject = dataObjetc.findIndex((object: { id: any; }) => {
                         return object.id === id;
                     });
                     if(indexOfObject != -1){
                         dataObjetc.splice(indexOfObject,1)
                     }
                     //console.log(dataObjetc); return
-                    fs.writeFile(archivo, JSON.stringify(dataObjetc), (err) => {
+                    fs.writeFile(archivo, JSON.stringify(dataObjetc), (err: string | undefined) => {
                             if(err) {
                                 reject(err)
                                 throw new Error(err)
@@ -122,9 +123,9 @@ class Contentedor{
         });
     }
 
-    deleteAll = function (archivo) {
+    deleteAll = function (archivo: string) {
         return new Promise(function (resolve, reject) {      
-            fs.writeFile(archivo, '[]', (err, data) => {
+            fs.writeFile(archivo, '[]', (err: string | undefined, data: any) => {
                     if(err) {
                         reject(err)
                         throw new Error(err)
@@ -149,7 +150,7 @@ const nota2 = {
     contenido : 'Lorem ipsum dolor sit amet consectetur adipiscing elit.'
 }
 
-const notasPost = async (nota) => {
+const notasPost = async (nota: { denominacion: string; contenido: string; }) => {
     return await contenedor.save(nota, './notas.json')
     //console.log('Nota guardada Id : ', notaId)
 }
@@ -159,12 +160,12 @@ const notasGet = () => {
    //console.log('Estas son todas las notas : ', notas)
 }
 
-const notasGetDetalle = async (notaId) => {
+const notasGetDetalle = async (notaId: any) => {
     return await contenedor.getById(notaId, './notas.json')
     //console.log('Tu nota seleccionada : ', notaDetalle)
 }
 
-const notasDeleteDetalle = async (notaId) => {
+const notasDeleteDetalle = async (notaId: any) => {
     return await contenedor.deleteById(notaId, './notas.json')
     //console.log(notaDeleteDetalle)
 }
@@ -188,11 +189,10 @@ const notasEjecucionCompleta = async () => {
 
 //notasEjecucionCompleta()
 
-
-module.exports = {
+export {  
     notasGet,
     notasPost,
     notasGetDetalle,
     notasDelete,
     notasDeleteDetalle
-};
+}

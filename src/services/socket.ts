@@ -1,8 +1,8 @@
 const socketIo = require('socket.io');
 const notas = require('../notas')
-let io;
+let io: { on: (arg0: string, arg1: (socket: any) => Promise<void>) => void; sockets: { emit: (arg0: string, arg1: any) => void; }; };
 
-const initWsServer = (server) => {
+const initWsServer = (server: any) => {
   io = socketIo(server);
 
   io.on('connection', async (socket) => {
@@ -20,7 +20,7 @@ const getWsServer = () => {
   return io;
 }
 
-module.exports = {
+export {  
   initWsServer,
   getWsServer
-};
+}

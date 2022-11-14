@@ -1,7 +1,9 @@
-const {Router} = require('express')
+import { Router } from 'express';
 const router = Router()
-const notas = require('../notas')
-const { getWsServer } = require('../services/socket');
+import * as notas from '../notas';
+import { getWsServer } from '../services/socket';
+import {authVerification} from '../middlewares/auth'
+
 
 /* ****************************************************
 ************** ESTRUCTURA OBJETO NOTA *****************
@@ -31,9 +33,8 @@ const { getWsServer } = require('../services/socket');
 
 router.get('/', async function (req, res) {
     const notasGet = await notas.notasGet()
-    /* res.json({ notas: notasGet }) */
-    //console.log({notasGet})
-    res.render('notas', {notasGet})
+    res.json({ notas: notasGet })
+    //res.render('notas', {notasGet})
 })
 router.get('/:id', async function (req, res) {
     const notasGetDetalle = await notas.notasGetDetalle(req.params.id)
@@ -43,16 +44,16 @@ router.get('/:id', async function (req, res) {
         res.json({ notas: notasGetDetalle })
     }
 })
-router.post('/', async function (req, res) {
+router.post('/', authVerification, async function (req, res) {
     const notasPost = await notas.notasPost(req.body)
     const io = getWsServer()
     const notasGetDetalle = await notas.notasGetDetalle(notasPost)
     io.sockets.emit('NotasCliente', notasGetDetalle)
     res.json({ id: notasPost })
 })
-router.put('/:id', async function (req, res) {
-    const notasGet = await notas.notasGet()
-    const notaEncontrada = notasGet.findIndex(nota => {
+router.put('/:id', authVerification, async function (req, res) {
+    const notasGet : any = await notas.notasGet()
+    const notaEncontrada = notasGet.findIndex((nota: any) => {
         return nota.id === parseInt(req.params.id);
     });
     if (notaEncontrada != -1) {
@@ -71,7 +72,7 @@ router.put('/:id', async function (req, res) {
         nuevo: req.body
     })
 })
-router.delete('/:id', async function (req, res) {
+router.delete('/:id', authVerification, async function (req, res) {
     await notas.notasDeleteDetalle(parseInt(req.params.id))
     res.json({
         status: 'Ok',
@@ -79,4 +80,4 @@ router.delete('/:id', async function (req, res) {
     })
 })
 
-module.exports = router
+export {router}
