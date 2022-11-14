@@ -49,5 +49,33 @@ router.delete('/:id', async function (req, res) {
         id: req.params.id
     })
 })
+router.delete('/:id/:notaId', async function (req, res) {
+    const notasGet : any = await carrito.notasGet()
+    const notaEncontrada = notasGet.findIndex((nota: any) => {
+        return nota.id === parseInt(req.params.id);
+    });
+    //console.log(notasGet);
+    if (notaEncontrada != -1) {
+        const notaEspecificaEncontrada = notasGet[notaEncontrada].notas.findIndex((nota: any) => {
+            return nota.id === parseInt(req.params.notaId);
+        });
+        if (notaEspecificaEncontrada != -1) {
+            notasGet[notaEncontrada].notas.splice(notaEspecificaEncontrada,1)
+        }
+    }
+    //console.log(notasGet);return
+    await carrito.notasDelete()
+    
+    try {
+        await fs.writeFile('./carrito.json',  JSON.stringify(notasGet));
+        res.json({
+            status: 'Ok',
+        })
+    } catch (err) {
+        res.json({
+            status: err,
+        })
+    }
+})
 
 export {router}
