@@ -47,5 +47,5 @@ Postman:
                 "id": 2,
                 "cantidad": 20
             }
-        - DELETE    http://localhost:8080/api/carrito/idCarrito
+        - DELETE    http://localhost:8080/api/carrito/id
         - DELETE    http://localhost:8080/api/carrito/idCarrito/idNota
