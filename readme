@@ -2,7 +2,7 @@ Descripción del Proyecto:
     - Un CRUD (Create, Read, Update & Delete) de Notas informativas.
     - Se le agrega un carrito, entendiendo al mismo, como un selector personal de notas, podria denominarse "Mis notas preferidas".
 
-    
+
 
 Comando de inicio:
     - npm run build para realizar el Bundle (por si las dudas el desarrollador no lo realizo) 
@@ -47,4 +47,5 @@ Postman:
                 "id": 2,
                 "cantidad": 20
             }
+        - DELETE    http://localhost:8080/api/carrito/idCarrito
         - DELETE    http://localhost:8080/api/carrito/idCarrito/idNota
