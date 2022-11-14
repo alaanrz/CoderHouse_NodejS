@@ -1,0 +1,44 @@
+Comando de inicio:
+    - npm run build para realizar el Bundle (por si las dudas el desarrollador no lo realizo) 
+    - npm start
+
+
+
+Configuracion de permisos Administradores:
+    - src\config\variables.ts
+        administrador: true/false
+
+
+Postman:
+    Notas:
+        - POST      http://localhost:8080/api/notas
+            En Body -> raw, se le envia esta estructura
+            {
+                "denominacion": "Lorem impsun.",
+                "contenido": "Lorem ipsum dolor sit amet consectetur adipiscing elit."
+            }
+        - GET       http://localhost:8080/api/notas
+        - GET       http://localhost:8080/api/notas/id
+        - PUT       http://localhost:8080/api/notas/id
+            En Body -> raw, se le envia esta estructura
+            {
+                "denominacion": "Lorem impsun.",
+                "contenido": "Lorem ipsum dolor sit amet consectetur adipiscing elit."
+            }
+        - DELETE    http://localhost:8080/api/notas/id
+
+    Carrito:
+        - POST      http://localhost:8080/api/carrito
+            En Body -> raw, se le envia esta estructura
+            {
+                "id": 2,
+                "cantidad": 20
+            }
+        - GET       http://localhost:8080/api/carrito/id
+        - PUT       http://localhost:8080/api/carrito/id
+          En Body -> raw, se le envia esta estructura
+            {
+                "id": 2,
+                "cantidad": 20
+            }
+        - DELETE    http://localhost:8080/api/carrito/idCarrito/idNota
