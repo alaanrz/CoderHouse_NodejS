@@ -1,3 +1,9 @@
+Descripción del Proyecto:
+    - Un CRUD (Create, Read, Update & Delete) de Notas informativas.
+    - Se le agrega un carrito, entendiendo al mismo, como un selector personal de notas, podria denominarse "Mis notas preferidas".
+
+    
+
 Comando de inicio:
     - npm run build para realizar el Bundle (por si las dudas el desarrollador no lo realizo) 
     - npm start
