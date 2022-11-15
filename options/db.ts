@@ -5,6 +5,8 @@ const knex = require('knex')({
       port : 3306,
       user : 'root',
       password : '',
-      database : 'club_deportivo'
+      database : '`nodejs_coderhouse`'
     }
   });
+
+  export default knex;
