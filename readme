@@ -4,9 +4,13 @@ Descripción del Proyecto:
 
 
 
-Comando de inicio:
+IMPORTANTE!!! 
+Comandos de inicio:
     - npm run build para realizar el Bundle (por si las dudas el desarrollador no lo realizo) 
     - npm start
+    - POST  http://localhost:8080/api/notas/createTable : 
+        ejecuta el script necesario para eliminar la tabla si existe y crearla.
+        Solo la ruta correspondiente a /notas posee, por el momento, creacion de base de datos con Sqlite.
 
 
 
@@ -16,7 +20,7 @@ Configuracion de permisos Administradores:
 
 
 Postman:
-    Notas:
+    Notas (base de datos con Sqlite):
         - POST      http://localhost:8080/api/notas
             En Body -> raw, se le envia esta estructura
             {
