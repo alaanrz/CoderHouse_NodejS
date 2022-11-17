@@ -3,8 +3,11 @@ import { Server as HttpServer } from 'http';
 import {mainRouter} from '../routes/index';
 import path from 'path';
 import { initWsServer } from './socket';
+import ClientSql from '../../sql'
+import knex  from '../../options/db'
 
 
+const sql = new ClientSql(knex);
 
 const app = express()
 const httpServer = new HttpServer(app)
