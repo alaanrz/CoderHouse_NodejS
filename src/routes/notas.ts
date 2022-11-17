@@ -63,6 +63,10 @@ router.post('/', authVerification, async function (req, res) {
     console.table(allNotes);
     res.json(allNotes)
 })
+router.post('/createTable', authVerification, async function (req, res) {
+       await sql.createTable();
+       res.json({status: 'Tabla creada!'})
+   })
 router.put('/:id', authVerification, async function (req, res) {
 /*     const notasGet : any = await notas.notasGet()
     const notaEncontrada = notasGet.findIndex((nota: any) => {
