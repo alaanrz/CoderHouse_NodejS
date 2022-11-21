@@ -1,6 +1,6 @@
 - Creación de Base de datos y Coleccion.
     use ecommerce
-    db.createCollection("ecommerce")
+    db.createCollection("notas")
 
 - Agregar 10 documentos con valores distintos a la coleccion & Definir las claves de los documentos en relación a los campos de las tablas de esa base.
     notas = [
@@ -26,7 +26,7 @@
         "contenido" : "Lorem ipsum dolor sit amet sollicitudin risus vulputate natoque lobortis fames."}
         ]
 
-    db.notas.insert(notas)
+    db.notas.insertMany(notas)
 
 - Listar todos los documentos en cada colección.
     db.notas.find()
@@ -49,7 +49,7 @@ CRUD (Create, Read, Update & Delete)
     db.notas.find({ denominacion: { $regex : /mundial/i } })
 
 - Realizar una consulta por denominacion de nota específica.
-    db.notas.find({denominacion : "Benzema, se retira del mundial."})
+    db.notas.find({denominacion : "Muchas coincidencias, ¿vale soñar?."})
 
 - Hacer una actualización sobre todas las notas, agregando el campo vistas (visualizaciones de clientes) a todas ellas con un valor de 100.
     db.notas.updateMany({},{$set: {views: 100}})
