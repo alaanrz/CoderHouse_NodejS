@@ -1,0 +1,62 @@
+- Creación de Base de datos y Coleccion.
+    use ecommerce
+    db.createCollection("ecommerce")
+
+- Agregar 10 documentos con valores distintos a la coleccion & Definir las claves de los documentos en relación a los campos de las tablas de esa base.
+    notas = [
+        {"denominacion" : "Arrancó el Mundial.", 
+        "contenido" : "Lorem ipsum dolor sit amet sollicitudin risus vulputate natoque lobortis fames."},
+        {"denominacion" : "Colombia le gana a Qatar.", 
+        "contenido" : "Lorem ipsum dolor sit amet sollicitudin risus vulputate natoque lobortis fames."},
+        {"denominacion" : "La Scaloneta prendiendo motores.", 
+        "contenido" : "Lorem ipsum dolor sit amet sollicitudin risus vulputate natoque lobortis fames."},
+        {"denominacion" : "Muchas coincidencias, ¿vale soñar?.", 
+        "contenido" : "Lorem ipsum dolor sit amet sollicitudin risus vulputate natoque lobortis fames."},
+        {"denominacion" : "Messi entrenó diferenciado, pero sin preocupaciones.", 
+        "contenido" : "Lorem ipsum dolor sit amet sollicitudin risus vulputate natoque lobortis fames."},
+        {"denominacion" : "Djokovic gana su sexto Master.", 
+        "contenido" : "Lorem ipsum dolor sit amet sollicitudin risus vulputate natoque lobortis fames."},
+        {"denominacion" : "Federer se retira del profesionalismo.", 
+        "contenido" : "Lorem ipsum dolor sit amet sollicitudin risus vulputate natoque lobortis fames."},
+        {"denominacion" : "Manu Ginobilli en el salon de la fama.", 
+        "contenido" : "Lorem ipsum dolor sit amet sollicitudin risus vulputate natoque lobortis fames."},
+        {"denominacion" : "Vamos Leo!.", 
+        "contenido" : "Lorem ipsum dolor sit amet sollicitudin risus vulputate natoque lobortis fames."},
+        {"denominacion" : "Con la mano de Dios, mas presente que nunca.", 
+        "contenido" : "Lorem ipsum dolor sit amet sollicitudin risus vulputate natoque lobortis fames."}
+        ]
+
+    db.notas.insert(notas)
+
+- Listar todos los documentos en cada colección.
+    db.notas.find()
+
+- Mostrar la cantidad de documentos almacenados en cada una de ellas.
+    db.notas.countDocuments()
+
+
+
+
+CRUD (Create, Read, Update & Delete)
+
+- Agregar una notas más en la colección de notas.
+    db.notas.insertOne({ 
+        "denominacion" : "Messi se entrena separado, pero a no preocuparse.",
+        "contenido" : "Lorem ipsum dolor sit amet sollicitudin risus vulputate natoque lobortis fames."
+    })
+
+- Filtro.
+    db.notas.find({ denominacion: { $regex : /mundial/i } })
+
+- Realizar una consulta por denominacion de nota específica.
+    db.notas.find({denominacion : "Benzema, se retira del mundial."})
+
+- Hacer una actualización sobre todas las notas, agregando el campo vistas (visualizaciones de clientes) a todas ellas con un valor de 100.
+    db.notas.updateMany({},{$set: {views: 100}})
+
+- Cambiar el views a cero de las notas que no incluyan la palabra Mundial.
+    db.notas.updateMany({ denominacion: {$not: { $regex : /mundial/i }} }, {$set: {views : 0}})
+
+- Borrar las notas con views igual a 0.
+    db.notas.deleteMany({views: 0})
+
