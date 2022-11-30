@@ -1,13 +1,7 @@
 import { Router } from 'express';
 const router = Router()
-import * as notas from '../notas';
-import { getWsServer } from '../services/socket';
 import {authVerification} from '../middlewares/auth';
-import ClientSql from '../../sql';
-import config  from '../../options/db';
-
-
-const sql = new ClientSql(config);
+import { notasModel } from '../models/notas';
 
 
 /* ****************************************************
@@ -37,66 +31,92 @@ const sql = new ClientSql(config);
 ******************************************************* */
 
 router.get('/', async function (req, res) {
-    /* const notasGet = await notas.notasGet()
-    res.json({ notas: notasGet }) */
-    //res.render('notas', {notasGet})
-    const allNotes = await sql.getAllNotes();
-    res.json({ notas: allNotes })
+    try {
+        const notas = await notasModel.find();
+        res.json({
+            data: notas
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: error
+        });
+    }
 })
 router.get('/:id', async function (req, res) {
-    /* const notasGetDetalle = await notas.notasGetDetalle(req.params.id) */
-    const notasGetDetalle = await sql.getNoteById(parseInt(req.params.id));
-    if (!notasGetDetalle) {
-        res.status(404).json({ error: 'Nota no encontrada!' })
-    } else {
-        res.json({ notas: notasGetDetalle })
-    }
+    try {
+        const { id } = req.params;
+        const nota = await notasModel.findById(id);
+        if(!nota)
+            return res.status(404).json({
+            msg: 'Nota no encontrada!'
+            });
+
+            res.json({
+            data: nota,
+            })
+        } catch (error) {
+            res.status(500).json({
+                error: error
+            });
+        }
 })
 router.post('/', authVerification, async function (req, res) {
- /*    const notasPost = await notas.notasPost(req.body)
-    const io = getWsServer()
-    const notasGetDetalle = await notas.notasGetDetalle(notasPost)
-    io.sockets.emit('NotasCliente', notasGetDetalle)
-    res.json({ id: notasPost }) */
-    await sql.insertNote(req.body);
-    const allNotes = await sql.getAllNotes();
-    console.table(allNotes);
-    res.json(allNotes)
+    try {
+        const { denominacion, contenido } = req.body;
+        const nuevaNota = await notasModel.create({
+            denominacion,
+            contenido
+        });
+        res.status(201).json({
+            data: nuevaNota,
+        })   
+    } catch (error) {
+        res.status(500).json({
+            error: error
+        });
+    }
 })
 router.post('/createTable', authVerification, async function (req, res) {
-       await sql.createTable();
-       res.json({status: 'Tabla creada!'})
-   })
+     /*   await sql.createTable();
+       res.json({status: 'Tabla creada!'}) */
+})
 router.put('/:id', authVerification, async function (req, res) {
-/*     const notasGet : any = await notas.notasGet()
-    const notaEncontrada = notasGet.findIndex((nota: any) => {
-        return nota.id === parseInt(req.params.id);
-    });
-    if (notaEncontrada != -1) {
-        notasGet[notaEncontrada].denominacion = req.body.denominacion
-        notasGet[notaEncontrada].contenido = req.body.contenido
+    try {
+        const { id } = req.params;
+        const { denominacion, contenido } = req.body;
+
+        const nota = await notasModel.findById(id);
+        if(!nota)
+            return res.status(404).json({
+            msg: 'Nota no encontrada!',
+            });
+        const notaUpdated = await notasModel.findByIdAndUpdate(
+            id,
+            { denominacion, contenido },
+            { new: true }
+        );
+        res.json({
+            msg: 'Nota actualizada',
+            data: notaUpdated
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: error
+        });
     }
-    await notas.notasDelete()
-    for (let index = 0; index < notasGet.length; index++) {
-        const element = notasGet[index];
-        await notas.notasPost(element)
-    } */
-
-    await sql.updateNoteById({ denominacion: req.body.denominacion, contenido: req.body.contenido}, parseInt(req.params.id));
-
-    res.json({
-        status: 'Ok',
-        id: req.params.id,
-        nuevo: req.body
-    })
 })
 router.delete('/:id', authVerification, async function (req, res) {
-    /* await notas.notasDeleteDetalle(parseInt(req.params.id)) */
-    await sql.deleteNoteById(parseInt(req.params.id));
-    res.json({
-        status: 'Ok',
-        id: req.params.id
-    })
+    try {
+        const { id } = req.params;
+        await notasModel.findByIdAndDelete(id);
+        res.json({
+            msg: 'Nota eliminada!'
+        })
+    } catch (error) {
+        res.status(500).json({
+            error: error
+        });
+    }
 })
 
 export {router}
