@@ -20,11 +20,25 @@
   export default knex; 
 */
 
-  const knex = {
+/*   const knex = {
     client: 'sqlite3',
     connection: {
         filename: './DB/ecommerce.sqlite'
     },
     useNullAsDefault: true
   }
-  export default knex;
+  export default knex; */
+
+import mongoose from 'mongoose';
+
+const connectionString = 'mongodb://localhost:27017/ecommerce';
+
+const initMongoDB = async () => {
+  try {
+    await mongoose.connect(connectionString);
+  } catch (error) {
+    console.log(`ERROR => ${error}`);
+    return error;
+  }
+};
+export default initMongoDB;

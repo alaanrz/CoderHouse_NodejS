@@ -1,4 +1,4 @@
-import ClientSql from '../sql'
+/* import ClientSql from '../sql'
 import config  from '../options/db'
 
 
@@ -28,4 +28,4 @@ async function test(){
     sql.close()
 }
 
-test();
+test(); */
