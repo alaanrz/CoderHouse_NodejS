@@ -6,11 +6,14 @@ Descripción del Proyecto:
 
 IMPORTANTE!!! 
 Comandos de inicio:
+    - En .env.example se encuentra la constante que debe agregarse en su respectivo .env
     - npm run build para realizar el Bundle (por si las dudas el desarrollador no lo realizo) 
     - npm start
-    - POST  http://localhost:8080/api/notas/createTable : 
-        ejecuta el script necesario para eliminar la tabla si existe y crearla.
-        Solo la ruta correspondiente a /notas posee, por el momento, creacion de base de datos con Sqlite.
+    - Creación de Base de datos y Coleccion (por comandos o por interface).
+        use ecommerce
+        db.createCollection("notas")
+    Solo la ruta correspondiente a /notas posee, por el momento, creacion de base de datos con MongoDB - Mongo Atlas.
+    - Ya puede comenzar a ejecutar los endpoints correspondientes a Notas (especificados mas abajo en este documento)
 
 
 
@@ -20,7 +23,7 @@ Configuracion de permisos Administradores:
 
 
 Postman:
-    Notas (base de datos con Sqlite):
+    Notas (base de datos con MongoDB - Mongo Atlas):
         - POST      http://localhost:8080/api/notas
             En Body -> raw, se le envia esta estructura
             {
@@ -37,7 +40,7 @@ Postman:
             }
         - DELETE    http://localhost:8080/api/notas/id
 
-    Carrito:
+    Carrito (no posee aun base de datos con MongoDB - Mongo Atlas):
         - POST      http://localhost:8080/api/carrito
             En Body -> raw, se le envia esta estructura
             {
