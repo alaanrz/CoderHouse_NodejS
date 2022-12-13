@@ -3,6 +3,25 @@ const router = Router()
 import {authVerification} from '../middlewares/auth';
 import { notasModel } from '../models/notas';
 
+/* 
+Desafio Mocks y Normalización:
+1) hacer con faker.js 5 datos falsos de notas
+2) recuperar aleatoriamente alguno de esos 5 datos mediante un endpoint
+3) Endpoint de consulta de todas las notas de MongoDB (ya hecho)
+4) Endpoint de normalizacion de consulta de todas las notas de MongoDB:
+    Para crear notas "des-normalizadas", agregarles un campo autor que tenga un objeto (Id, Nombre y Apellido) y que se repita en un par de notas.
+5) Endpoint de des-normalizacion de consulta de todas las notas de MongoDB
+
+Desafio Log-in por formulario:
+    "dependencies": {
+        "cookie-parser": "^1.4.5",
+        "express": "^4.17.1",
+        "express-session": "^1.17.2",
+        "session-file-store": "^1.5.0"
+    }
+
+ Me quede a los 36 minutos de la clase 32155 - 07/12 - Cookies, Sesiones, Storages - Parte 2 : Redit + NodeJs
+*/
 
 /* ****************************************************
 ************** ESTRUCTURA OBJETO NOTA *****************
@@ -29,8 +48,11 @@ import { notasModel } from '../models/notas';
 /* ****************************************************
 ******************** ROUTER ***************************
 ******************************************************* */
-
+//const notas = ["pepe","pepito","pipon"];
 router.get('/', async function (req, res) {
+    //console.log(notas)
+    //notas.push("peponsin")
+    //console.log(notas)
     try {
         const notas = await notasModel.find();
         res.json({
@@ -62,10 +84,11 @@ router.get('/:id', async function (req, res) {
 })
 router.post('/', authVerification, async function (req, res) {
     try {
-        const { denominacion, contenido } = req.body;
+        const { denominacion, contenido, autor } = req.body;
         const nuevaNota = await notasModel.create({
             denominacion,
-            contenido
+            contenido,
+            autor
         });
         res.status(201).json({
             data: nuevaNota,
