@@ -13,13 +13,6 @@ Desafio Mocks y Normalización:
 5) Endpoint de des-normalizacion de consulta de todas las notas de MongoDB
 
 Desafio Log-in por formulario:
-    "dependencies": {
-        "cookie-parser": "^1.4.5",
-        "express": "^4.17.1",
-        "express-session": "^1.17.2",
-        "session-file-store": "^1.5.0"
-    }
-
  Me quede a los 36 minutos de la clase 32155 - 07/12 - Cookies, Sesiones, Storages - Parte 2 : Redit + NodeJs
 */
 
