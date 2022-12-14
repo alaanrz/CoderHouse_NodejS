@@ -13,6 +13,8 @@ Desafio Mocks y Normalización:
 5) Endpoint de des-normalizacion de consulta de todas las notas de MongoDB
 
 Desafio Log-in por formulario:
+1) Guardar sesiones con MongoStore (connect-mongo) + MongoAtlas
+
  Me quede a los 36 minutos de la clase 32155 - 07/12 - Cookies, Sesiones, Storages - Parte 2 : Redit + NodeJs
 */
 
