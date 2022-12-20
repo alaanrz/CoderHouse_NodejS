@@ -16,8 +16,6 @@ Desafio Mocks y Normalización:
 
 Desafio Log-in por formulario:
 1) Guardar sesiones con MongoStore (connect-mongo) + MongoAtlas
-
- Me quede a los 36 minutos de la clase 32155 - 07/12 - Cookies, Sesiones, Storages - Parte 2 : Redit + NodeJs
 */
 
 /* ****************************************************
