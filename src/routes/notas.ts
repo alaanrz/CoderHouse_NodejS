@@ -2,6 +2,7 @@ import { Router } from 'express';
 const router = Router()
 import {authVerification} from '../middlewares/auth';
 import { notasModel } from '../models/notas';
+import { faker } from '@faker-js/faker';
 
 /* 
 Desafio Mocks y Normalización:
@@ -43,11 +44,27 @@ Desafio Log-in por formulario:
 /* ****************************************************
 ******************** ROUTER ***************************
 ******************************************************* */
-//const notas = ["pepe","pepito","pipon"];
+const notas: Array<{}> = [];
+router.get('/faker', async function (req, res) {
+    for (let index = 0; index < 10; index++) {
+        notas.push({
+            id: faker.datatype.uuid(),
+            denominacion: faker.lorem.paragraph(),
+            contenido: faker.lorem.paragraph()
+        })
+    }
+    res.json({
+        data: notas
+    });
+})
+router.get('/faker/aleatorio', async function (req, res) {
+    const nota = notas[Math.floor(Math.random() * notas.length)];
+    res.json({
+        data: nota
+    });
+})
+
 router.get('/', async function (req, res) {
-    //console.log(notas)
-    //notas.push("peponsin")
-    //console.log(notas)
     try {
         const notas = await notasModel.find();
         res.json({
@@ -58,6 +75,9 @@ router.get('/', async function (req, res) {
             error: error
         });
     }
+})
+router.get('/normailizacion', async function (req, res) {
+
 })
 router.get('/:id', async function (req, res) {
     try {
