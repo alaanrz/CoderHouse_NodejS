@@ -3,6 +3,7 @@ const router = Router()
 import {authVerification} from '../middlewares/auth';
 import { notasModel } from '../models/notas';
 import { faker } from '@faker-js/faker';
+import { normalize, schema, denormalize } from 'normalizr';
 
 /* 
 Desafio Mocks y Normalización:
@@ -76,9 +77,17 @@ router.get('/', async function (req, res) {
         });
     }
 })
-router.get('/normailizacion', async function (req, res) {
 
+
+/* ****************************************************
+*************** ↧↧↧ NORMALIZACION ↧↧↧ *******************
+******************************************************* */
+router.get('/normailizacion', async function (req, res) {
+ /* Pendiente... */
 })
+/* ****************************************************
+************* ↥↥↥ NORMALIZACION ↥↥↥ ********************
+******************************************************* */
 router.get('/:id', async function (req, res) {
     try {
         const { id } = req.params;
