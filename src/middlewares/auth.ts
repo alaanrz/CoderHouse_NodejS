@@ -8,6 +8,10 @@ const authVerification = (req : Request, res: Response, next: NextFunction) =>{
         return res.status(401).json({ status: "No estas autorizado." })    
     }
     next()
-}
+};
+const validateLogIn = (req : Request, res: Response, next: NextFunction) => {
+    if (req.session.info && req.session.info.loggedIn) next();
+    else res.status(401).json({ msg: 'no estas autorizado' });
+};
 
-export {authVerification}
+export {authVerification, validateLogIn}

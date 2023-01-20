@@ -1,21 +1,25 @@
 import { Router } from 'express';
 const router = Router()
-import {authVerification} from '../middlewares/auth';
+import {authVerification, validateLogIn} from '../middlewares/auth';
 import { notasModel } from '../models/notas';
 import { faker } from '@faker-js/faker';
 import { normalize, schema, denormalize } from 'normalizr';
 
 /* 
 Desafio Mocks y Normalización:
-1) hacer con faker.js 5 datos falsos de notas
-2) recuperar aleatoriamente alguno de esos 5 datos mediante un endpoint
-3) Endpoint de consulta de todas las notas de MongoDB (ya hecho)
-4) Endpoint de normalizacion de consulta de todas las notas de MongoDB:
+1) hacer con faker.js 5 datos falsos de notas ✔
+2) recuperar aleatoriamente alguno de esos 5 datos mediante un endpoint ✔
+3) Endpoint de consulta de todas las notas de MongoDB (ya hecho)✔
+4) Endpoint de normalizacion de consulta de todas las notas de MongoDB:✘
     Para crear notas "des-normalizadas", agregarles un campo autor que tenga un objeto (Id, Nombre y Apellido) y que se repita en un par de notas.
-5) Endpoint de des-normalizacion de consulta de todas las notas de MongoDB
+5) Endpoint de des-normalizacion de consulta de todas las notas de MongoDB✘
 
 Desafio Log-in por formulario:
 1) Guardar sesiones con MongoStore (connect-mongo) + MongoAtlas
+    Verificar que en los reinicios del servidor, no se pierdan las sesiones activas de los clientes.✔
+    Mediante el cliente web de Mongo Atlas, revisar los id de sesión correspondientes a cada cliente y sus datos.✔
+    Borrar una sesión de cliente en la base y comprobar que en el próximo request al usuario se le presente la vista de login.✔
+    Fijar un tiempo de expiración de sesión de 10 minutos recargable con cada visita del cliente al sitio y verificar que si pasa ese tiempo de inactividad el cliente quede deslogueado.✘
 */
 
 /* ****************************************************
@@ -40,6 +44,62 @@ Desafio Log-in por formulario:
 */
 
 
+/* ****************************************************
+*************** ROUTER SESSIONES **********************
+*************** (pasar a index.ts o en su defecto crear una nueva route que sea users o auth) ******************** */
+const users = [
+    {
+        username: 'juan',
+        password : '1234',
+        admin: true,
+    },
+    {
+        username: 'jose',
+        password : '123456',
+        admin: false,
+    }
+];
+
+router.post('/login', async (req, res) => {
+    //res.json(req.session);return;
+    //res.json(req.body);return;
+    const { username, password } = req.body;
+    const index = users.findIndex((aUser) => aUser.username === username && aUser.password === password);
+
+    if(index < 0)
+        res.status(401).json({ msg: 'no estas autorizado' });
+    else {
+        const user = users[index];
+        req.session.info = {
+        loggedIn: true,
+        contador : 1,
+        username : user.username,
+        admin : user.admin,
+        };
+        res.json({msg: 'Bienvenido!!', sesion: req.session});
+    }
+});
+router.get('/secret-endpoint', validateLogIn, async (req, res) => {
+    if(req.session.info){
+        req.session.info.contador++;
+        res.json({
+            msg: `${req.session.info.username} ha visitado el sitio ${req.session.info.contador} veces`,
+        });
+    };
+});
+router.post('/logout', async (req, res) => {
+    req.session.destroy((err) => {
+      if (!err) res.send('Logout ok!');
+      else res.send({ status: 'Logout ERROR', body: err });
+    });
+});
+router.get('/info', validateLogIn, async (req, res) => {
+    res.send({
+      session: req.session,
+      sessionId: req.sessionID,
+      cookies: req.cookies,
+    });
+});
 /* ****************************************************
 ******************** ROUTER ***************************
 ******************************************************* */
