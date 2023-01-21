@@ -40,6 +40,23 @@ Postman:
             }
         - DELETE    http://localhost:8080/api/notas/id
 
+    Users/Auth (base de datos con MongoDB - Mongo Atlas):
+        - POST      http://localhost:8080/api/notas/login
+            En Body -> raw (JSON), se le envia esta estructura
+            {
+                "username": "juan",
+                "password": "1234"
+            }
+            o
+            {
+                "username": "jose",
+                "password": "123456"
+            }
+        - GET       http://localhost:8080/api/notas/secret-endpoint
+        - GET       http://localhost:8080/api/notas/info
+        - POST      http://localhost:8080/api/notas/logout
+
+
     Carrito (no posee aun base de datos con MongoDB - Mongo Atlas):
         - POST      http://localhost:8080/api/carrito
             En Body -> raw, se le envia esta estructura
